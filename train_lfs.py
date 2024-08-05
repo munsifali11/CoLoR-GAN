@@ -22,9 +22,9 @@ try:
 except ImportError:
     wandb = None
 
-from lifelong_model import LifelongGenerator as Generator
-from lifelong_model import Extra
-from lifelong_model import LifelongPatchDiscriminator as Discriminator  # , Projection_head
+from model_lfs import LifelongGenerator as Generator
+from model_lfs import Extra
+from model_lfs import LifelongPatchDiscriminator as Discriminator  # , Projection_head
 from dataset import MultiResolutionDataset
 from distributed import (
     get_rank,
@@ -306,7 +306,7 @@ def train(args, loader, generator, discriminator, extra, g_optim, d_optim, e_opt
             cluster_count = 0
 
             z = torch.randn(args.batch * 4, 512, device='cuda')
-            w = generator.style(z).unsqueeze(1).repeat(1, 14, 1)
+            w = generator.style(z).unsqueeze(1).repeat(1, args.latent_size, 1)
             fake_img, feats = generator([w], input_is_latent=True, return_feats=True)
             lpips_dists = torch.zeros(args.batch * 4, args.batch)
 
@@ -508,6 +508,7 @@ if __name__ == "__main__":
     parser.add_argument('--left_use_add', action='store_true')
     parser.add_argument('--left_use_act', action='store_true')
     parser.add_argument('--cluster_wise_mode_seeking', action='store_true')
+    parser.add_argument('--latent_size', type=int, default=14)
 
     args = parser.parse_args()
     print(args)

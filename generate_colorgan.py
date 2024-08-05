@@ -5,7 +5,7 @@ import numpy as np
 import torch.nn.functional as F
 
 from argparse import ArgumentParser
-from lifelong_model import LifelongGenerator as Generator
+from model_colorgan import CoLoRGenerator as Generator
 from PIL import Image
 from torchvision import transforms, utils
 from torch import nn
@@ -36,15 +36,18 @@ if __name__=='__main__':
     argparser.add_argument('--subspace_std', type=float, default=0.1)
     argparser.add_argument('--noise', type=str, default=None)
     argparser.add_argument('--rank', type=int, default=1)
-    argparser.add_argument("--left_use_act", action="store_true")
+    argparser.add_argument("--use_act", action="store_true")
     argparser.add_argument("--left_use_add", action="store_true")
+    argparser.add_argument('--lora_alpha', type=float, default=1.0)
+    argparser.add_argument('--lora_alpha_fc', type=float, default=1.0)
     args = argparser.parse_args()
     torch.manual_seed(10)
     
     pretrained_ckpt = torch.load(args.pretrained_ckpt)
     ckpt = torch.load(args.ckpt)
 
-    model = Generator(args.size, args.latent, args.n_mlp, lifelong=True, rank=args.rank, left_use_act=args.left_use_act, left_use_add=args.left_use_add).cuda()
+    model = Generator(args.size, args.latent, args.n_mlp, lifelong=True, rank=args.rank, use_act=args.use_act, 
+                      left_use_add=args.left_use_add, lora_alpha = args.lora_alpha, lora_alpha_fc=args.lora_alpha_fc).cuda()
     model.load_state_dict(pretrained_ckpt['g_ema'], strict=False)
 
     state_dict = model.state_dict()

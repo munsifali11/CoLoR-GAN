@@ -74,4 +74,22 @@ This code is based on [lfs-gan](https://github.com/KU-VGI/LFS-GAN), [stylegan2-p
 
 # BibTex
 
+```bibtex
+@InProceedings{10.1007/978-3-032-10192-1_5,
+author="Ali, Munsif
+and Rossi, Leonardo
+and Bertozzi, Massimo",
+editor="Rodol{\`a}, Emanuele
+and Galasso, Fabio
+and Masi, Iacopo",
+title="CoLoR-GAN: Continual Few-Shot Learning with Low-Rank Adaptation in Generative Adversarial Networks",
+booktitle="Image Analysis and Processing -- ICIAP 2025",
+year="2026",
+publisher="Springer Nature Switzerland",
+address="Cham",
+pages="52--64",
+}
+```
+
+
 TODO
